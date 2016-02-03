@@ -1,0 +1,348 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>myMainScript</title><meta name="generator" content="MATLAB 8.4"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2016-02-04"><meta name="DC.source" content="myMainScript.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#2">1 - Ram-Lak</a></li><li><a href="#3">2 - Sheep-Logan</a></li><li><a href="#4">3 - Cosine</a></li><li><a href="#5">Part 2 - Backprojection of Smoothened Transforms</a></li><li><a href="#6">Part 3 RRMSE vs W</a></li></ul></div><pre class="codeinput">clc;
+clear;
+close <span class="string">all</span>;
+
+<span class="comment">%%Part 1 - Frequency Filtering</span>
+f = phantom(256);
+h = figure
+imshow(f)
+title(<span class="string">'Phantom 256'</span>)
+theta = 0:3:177;
+radonTransformedPhantom = radon(f,theta);
+
+<span class="comment">%Filter IDs for the image filters in f-domain</span>
+<span class="comment">% 1 - Ram-Lak</span>
+<span class="comment">% 2 - Sheep-Logan</span>
+<span class="comment">% 3 - Cosine</span>
+</pre><h2>1 - Ram-Lak<a name="2"></a></h2><pre class="codeinput">filteredImage = myFilter(radonTransformedPhantom, 0.5,1);
+backprojImage_0_5_1 = myBackproj(filteredImage,theta);
+
+filteredImage = myFilter(radonTransformedPhantom, 1,1);
+backprojImage_1_1 = myBackproj(filteredImage,theta);
+</pre><h2>2 - Sheep-Logan<a name="3"></a></h2><pre class="codeinput">filteredImage = myFilter(radonTransformedPhantom, 0.5,2);
+backprojImage_0_5_2 = myBackproj(filteredImage,theta);
+
+filteredImage = myFilter(radonTransformedPhantom, 1,2);
+backprojImage_1_2 = myBackproj(filteredImage,theta);
+</pre><h2>3 - Cosine<a name="4"></a></h2><pre class="codeinput">filteredImage = myFilter(radonTransformedPhantom, 0.5,3);
+backprojImage_0_5_3 = myBackproj(filteredImage,theta);
+
+filteredImage = myFilter(radonTransformedPhantom, 1,3);
+backprojImage_1_3 = myBackproj(filteredImage,theta);
+
+figure(<span class="string">'units'</span>,<span class="string">'normalized'</span>,<span class="string">'outerposition'</span>,[0 0 1 1])
+subplot(3,2,1)
+imshow(backprojImage_0_5_1)
+title(<span class="string">'Ram-Lak filter with L = Wmax/2'</span>)
+subplot(3,2,2)
+imshow(backprojImage_1_1)
+title(<span class="string">'Ram-Lak filter with L = Wmax'</span>)
+
+subplot(3,2,3)
+imshow(backprojImage_0_5_2)
+title(<span class="string">'Sheep-Logan filter with L = Wmax/2'</span>)
+subplot(3,2,4)
+imshow(backprojImage_1_2)
+title(<span class="string">'Sheep-Logan filter with L = Wmax'</span>)
+
+subplot(3,2,5)
+imshow(backprojImage_0_5_3)
+title(<span class="string">'Cosine filter with L = Wmax/2'</span>)
+subplot(3,2,6)
+imshow(backprojImage_1_3)
+title(<span class="string">'Cosine filter with L = Wmax'</span>)
+</pre><pre class="codeoutput">
+h = 
+
+  Figure (1) with properties:
+
+      Number: 1
+        Name: ''
+       Color: [0.9400 0.9400 0.9400]
+    Position: [427 306 512 384]
+       Units: 'pixels'
+
+  Use GET to show all properties
+
+</pre><img vspace="5" hspace="5" src="myMainScript_01.png" alt=""> <img vspace="5" hspace="5" src="myMainScript_02.png" alt=""> <h2>Part 2 - Backprojection of Smoothened Transforms<a name="5"></a></h2><pre class="codeinput">mask = fspecial (<span class="string">'gaussian'</span>, 11, 1);
+f1 = conv2 (f, mask, <span class="string">'same'</span>);
+
+mask = fspecial (<span class="string">'gaussian'</span>, 51, 5);
+f5 = conv2 (f, mask, <span class="string">'same'</span>);
+
+
+figure(<span class="string">'units'</span>,<span class="string">'normalized'</span>,<span class="string">'outerposition'</span>,[0 0 1 1])
+subplot(2,1,1)
+imshow(f1)
+title(<span class="string">'Gaussion filter with sigma = 1'</span>)
+subplot(2,1,2)
+imshow(f5)
+title(<span class="string">'Gaussion filter with sigma = 5'</span>)
+clc
+
+radonTransformedPhantom_0 = radon(f,theta);
+radonTransformedPhantom_1 = radon(f1,theta);
+radonTransformedPhantom_5 = radon(f5,theta);
+
+filteredImage0 = myFilter(radonTransformedPhantom_0, 1,1);
+backprojImage0 = myBackproj(filteredImage0,theta);
+
+
+filteredImage1 = myFilter(radonTransformedPhantom_1, 1,1);
+backprojImage1 = myBackproj(filteredImage1,theta);
+
+
+filteredImage5 = myFilter(radonTransformedPhantom_5, 1,1);
+backprojImage5 = myBackproj(filteredImage5,theta);
+
+figure(<span class="string">'units'</span>,<span class="string">'normalized'</span>,<span class="string">'outerposition'</span>,[0 0 1 1])
+subplot(3,1,1)
+imshow(backprojImage0)
+title(<span class="string">'Backproj Image| sigma = 0'</span>)
+subplot(3,1,2)
+imshow(backprojImage1)
+title(<span class="string">'Backproj Image| sigma = 1'</span>)
+subplot(3,1,3)
+imshow(backprojImage5)
+title(<span class="string">'Backproj Image| sigma = 5'</span>)
+
+disp(strcat([<span class="string">'RRMSE with sigma = 0 '</span> ,num2str(myRRMSE(f ,backprojImage0))]))
+disp(strcat([<span class="string">'RRMSE with sigma = 1 '</span> ,num2str(myRRMSE(f1,backprojImage1))]))
+disp(strcat([<span class="string">'RRMSE with sigma = 5 '</span> ,num2str(myRRMSE(f5,backprojImage5))]))
+</pre><pre class="codeoutput">RRMSE with sigma = 0 0.59715
+RRMSE with sigma = 1 0.50217
+RRMSE with sigma = 5 0.43821
+</pre><img vspace="5" hspace="5" src="myMainScript_03.png" alt=""> <img vspace="5" hspace="5" src="myMainScript_04.png" alt=""> <h2>Part 3 RRMSE vs W<a name="6"></a></h2><pre class="codeinput">N = size(radonTransformedPhantom,1);
+RRMSE0_history = zeros(N,1);
+RRMSE1_history = zeros(N,1);
+RRMSE5_history = zeros(N,1);
+<span class="keyword">for</span> i = 1:N
+    filteredImage0 = myFilter(radonTransformedPhantom_0, i/N,1);
+    backprojImage0 = myBackproj(filteredImage0,theta);
+
+    filteredImage1 = myFilter(radonTransformedPhantom_1, i/N,1);
+    backprojImage1 = myBackproj(filteredImage1,theta);
+
+    filteredImage5 = myFilter(radonTransformedPhantom_5, i/N,1);
+    backprojImage5 = myBackproj(filteredImage5,theta);
+
+    RRMSE0_history(i) = myRRMSE(f,backprojImage0);
+    RRMSE1_history(i) = myRRMSE(f1,backprojImage1);
+    RRMSE5_history(i) = myRRMSE(f5,backprojImage5);
+<span class="keyword">end</span>
+
+figure(<span class="string">'units'</span>,<span class="string">'normalized'</span>,<span class="string">'outerposition'</span>,[0 0 1 1])
+plot(RRMSE0_history)
+hold <span class="string">on</span>
+plot(RRMSE1_history,<span class="string">'y'</span>)
+plot(RRMSE5_history,<span class="string">'r'</span>)
+title(<span class="string">'RRMSE vs theta'</span>)
+legend(<span class="string">'S0'</span>,<span class="string">'S1'</span>,<span class="string">'S5'</span>)
+</pre><img vspace="5" hspace="5" src="myMainScript_05.png" alt=""> <p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2014b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+clc;
+clear;
+close all;
+
+%%Part 1 - Frequency Filtering
+f = phantom(256);
+h = figure
+imshow(f)
+title('Phantom 256')
+theta = 0:3:177;
+radonTransformedPhantom = radon(f,theta);
+
+%Filter IDs for the image filters in f-domain
+% 1 - Ram-Lak
+% 2 - Sheep-Logan
+% 3 - Cosine
+
+%%% 1 - Ram-Lak
+filteredImage = myFilter(radonTransformedPhantom, 0.5,1);
+backprojImage_0_5_1 = myBackproj(filteredImage,theta);
+
+filteredImage = myFilter(radonTransformedPhantom, 1,1);
+backprojImage_1_1 = myBackproj(filteredImage,theta);
+
+%%% 2 - Sheep-Logan
+filteredImage = myFilter(radonTransformedPhantom, 0.5,2);
+backprojImage_0_5_2 = myBackproj(filteredImage,theta);
+
+filteredImage = myFilter(radonTransformedPhantom, 1,2);
+backprojImage_1_2 = myBackproj(filteredImage,theta);
+
+%%% 3 - Cosine
+filteredImage = myFilter(radonTransformedPhantom, 0.5,3);
+backprojImage_0_5_3 = myBackproj(filteredImage,theta);
+
+filteredImage = myFilter(radonTransformedPhantom, 1,3);
+backprojImage_1_3 = myBackproj(filteredImage,theta);
+
+figure('units','normalized','outerposition',[0 0 1 1])
+subplot(3,2,1)
+imshow(backprojImage_0_5_1)
+title('Ram-Lak filter with L = Wmax/2')
+subplot(3,2,2)
+imshow(backprojImage_1_1)
+title('Ram-Lak filter with L = Wmax')
+
+subplot(3,2,3)
+imshow(backprojImage_0_5_2)
+title('Sheep-Logan filter with L = Wmax/2')
+subplot(3,2,4)
+imshow(backprojImage_1_2)
+title('Sheep-Logan filter with L = Wmax')
+
+subplot(3,2,5)
+imshow(backprojImage_0_5_3)
+title('Cosine filter with L = Wmax/2')
+subplot(3,2,6)
+imshow(backprojImage_1_3)
+title('Cosine filter with L = Wmax')
+
+
+%% Part 2 - Backprojection of Smoothened Transforms
+mask = fspecial ('gaussian', 11, 1);
+f1 = conv2 (f, mask, 'same');
+
+mask = fspecial ('gaussian', 51, 5);
+f5 = conv2 (f, mask, 'same');
+
+
+figure('units','normalized','outerposition',[0 0 1 1])
+subplot(2,1,1)
+imshow(f1)
+title('Gaussion filter with sigma = 1')
+subplot(2,1,2)
+imshow(f5)
+title('Gaussion filter with sigma = 5')
+clc
+
+radonTransformedPhantom_0 = radon(f,theta);
+radonTransformedPhantom_1 = radon(f1,theta);
+radonTransformedPhantom_5 = radon(f5,theta);
+
+filteredImage0 = myFilter(radonTransformedPhantom_0, 1,1);
+backprojImage0 = myBackproj(filteredImage0,theta);
+
+
+filteredImage1 = myFilter(radonTransformedPhantom_1, 1,1);
+backprojImage1 = myBackproj(filteredImage1,theta);
+
+
+filteredImage5 = myFilter(radonTransformedPhantom_5, 1,1);
+backprojImage5 = myBackproj(filteredImage5,theta);
+
+figure('units','normalized','outerposition',[0 0 1 1])
+subplot(3,1,1)
+imshow(backprojImage0)
+title('Backproj Image| sigma = 0')
+subplot(3,1,2)
+imshow(backprojImage1)
+title('Backproj Image| sigma = 1')
+subplot(3,1,3)
+imshow(backprojImage5)
+title('Backproj Image| sigma = 5')
+
+disp(strcat(['RRMSE with sigma = 0 ' ,num2str(myRRMSE(f ,backprojImage0))])) 
+disp(strcat(['RRMSE with sigma = 1 ' ,num2str(myRRMSE(f1,backprojImage1))])) 
+disp(strcat(['RRMSE with sigma = 5 ' ,num2str(myRRMSE(f5,backprojImage5))])) 
+
+%% Part 3 RRMSE vs W
+N = size(radonTransformedPhantom,1);
+RRMSE0_history = zeros(N,1);
+RRMSE1_history = zeros(N,1);
+RRMSE5_history = zeros(N,1);
+for i = 1:N
+    filteredImage0 = myFilter(radonTransformedPhantom_0, i/N,1);
+    backprojImage0 = myBackproj(filteredImage0,theta);
+    
+    filteredImage1 = myFilter(radonTransformedPhantom_1, i/N,1);
+    backprojImage1 = myBackproj(filteredImage1,theta);
+    
+    filteredImage5 = myFilter(radonTransformedPhantom_5, i/N,1);
+    backprojImage5 = myBackproj(filteredImage5,theta);
+
+    RRMSE0_history(i) = myRRMSE(f,backprojImage0);
+    RRMSE1_history(i) = myRRMSE(f1,backprojImage1);
+    RRMSE5_history(i) = myRRMSE(f5,backprojImage5);
+end
+
+figure('units','normalized','outerposition',[0 0 1 1])
+plot(RRMSE0_history)
+hold on
+plot(RRMSE1_history,'y')
+plot(RRMSE5_history,'r')
+title('RRMSE vs theta')
+legend('S0','S1','S5')
+
+##### SOURCE END #####
+--></body></html>
