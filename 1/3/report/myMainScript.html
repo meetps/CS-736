@@ -1,0 +1,184 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>myMainScript</title><meta name="generator" content="MATLAB 8.4"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2016-02-04"><meta name="DC.source" content="myMainScript.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#2">CT Chest Data</a></li><li><a href="#3">Phantom Data</a></li><li><a href="#4">CT_Chest MAT</a></li><li><a href="#5">Phantom MAT</a></li></ul></div><pre class="codeinput">clc;
+clear <span class="string">all</span>;
+close <span class="string">all</span>;
+</pre><h2>CT Chest Data<a name="2"></a></h2><pre class="codeinput">chest_data = load(<span class="string">'../data/CT_Chest.mat'</span>);
+imshow(chest_data.imageAC,[]);
+inputImage_1 = mat2gray(chest_data.imageAC);
+</pre><img vspace="5" hspace="5" src="myMainScript_01.png" alt=""> <h2>Phantom Data<a name="3"></a></h2><pre class="codeinput">phantom_data = load(<span class="string">'../data/myPhantom.mat'</span>);
+imshow(phantom_data.imageAC,[]);
+inputImage_2 = mat2gray(phantom_data.imageAC);
+
+thetaRange = 1:1:150;
+</pre><img vspace="5" hspace="5" src="myMainScript_02.png" alt=""> <h2>CT_Chest MAT<a name="4"></a></h2><pre class="codeinput">radonTransform = radon(inputImage_1,thetaRange);
+RRMSE_array = zeros(1,length(thetaRange));
+<span class="keyword">for</span> i = 1:180
+	backPropImage = mat2gray(0.5*iradon(radonTransform, thetaRange + i,<span class="string">'linear'</span>,<span class="string">'none'</span>,1,size(inputImage_1,1)));
+	RRMSE_array(i) = sqrt(sum((inputImage_1(:)-backPropImage(:)).^2))/sum((inputImage_1(:).^2));
+<span class="keyword">end</span>
+
+minIndex = find(RRMSE_array == min(RRMSE_array))
+minBackPropImage = mat2gray(0.5*iradon(radonTransform, thetaRange + minIndex,<span class="string">'linear'</span>,<span class="string">'none'</span>,1,size(inputImage_1,1)));
+
+figure
+subplot(2,1,1)
+plot(RRMSE_array)
+title(<span class="string">'RRMSE vs Theta | CT Chest'</span>)
+subplot(2,1,2)
+imshow(minBackPropImage)
+title(<span class="string">'Backproj Image with min RRMSE | CT Chest'</span>)
+</pre><pre class="codeoutput">
+minIndex =
+
+    14
+
+</pre><img vspace="5" hspace="5" src="myMainScript_03.png" alt=""> <h2>Phantom MAT<a name="5"></a></h2><pre class="codeinput">radonTransform = radon(inputImage_2,thetaRange);
+RRMSE_array = zeros(1,length(thetaRange));
+<span class="keyword">for</span> i = 1:180
+	backPropImage = mat2gray(0.5*iradon(radonTransform, thetaRange + i,<span class="string">'linear'</span>,<span class="string">'none'</span>,1,size(inputImage_2,1)));
+	RRMSE_array(i) = sqrt(sum((inputImage_2(:)-backPropImage(:)).^2))/sum((inputImage_2(:).^2));
+<span class="keyword">end</span>
+
+minIndex = find(RRMSE_array == min(RRMSE_array))
+minBackPropImage = mat2gray(0.5*iradon(radonTransform, thetaRange + minIndex,<span class="string">'linear'</span>,<span class="string">'none'</span>,1,size(inputImage_2,1)));
+
+plot(RRMSE_array)
+imshow(minBackPropImage)
+figure
+subplot(2,1,1)
+plot(RRMSE_array)
+title(<span class="string">'RRMSE vs Theta | Phantom'</span>)
+subplot(2,1,2)
+imshow(minBackPropImage)
+title(<span class="string">'Backproj Image with min RRMSE | Phantom'</span>)
+</pre><pre class="codeoutput">
+minIndex =
+
+    18
+
+</pre><img vspace="5" hspace="5" src="myMainScript_04.png" alt=""> <img vspace="5" hspace="5" src="myMainScript_05.png" alt=""> <p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2014b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+clc;
+clear all;
+close all;
+
+%% CT Chest Data
+chest_data = load('../data/CT_Chest.mat');
+imshow(chest_data.imageAC,[]);
+inputImage_1 = mat2gray(chest_data.imageAC);
+
+%% Phantom Data
+phantom_data = load('../data/myPhantom.mat');
+imshow(phantom_data.imageAC,[]);
+inputImage_2 = mat2gray(phantom_data.imageAC);
+
+thetaRange = 1:1:150;
+
+%% CT_Chest MAT
+radonTransform = radon(inputImage_1,thetaRange);
+RRMSE_array = zeros(1,length(thetaRange));
+for i = 1:180
+	backPropImage = mat2gray(0.5*iradon(radonTransform, thetaRange + i,'linear','none',1,size(inputImage_1,1)));
+	RRMSE_array(i) = sqrt(sum((inputImage_1(:)-backPropImage(:)).^2))/sum((inputImage_1(:).^2));
+end
+
+minIndex = find(RRMSE_array == min(RRMSE_array))
+minBackPropImage = mat2gray(0.5*iradon(radonTransform, thetaRange + minIndex,'linear','none',1,size(inputImage_1,1)));
+
+figure 
+subplot(2,1,1)
+plot(RRMSE_array)
+title('RRMSE vs Theta | CT Chest')
+subplot(2,1,2)
+imshow(minBackPropImage)
+title('Backproj Image with min RRMSE | CT Chest')
+
+%% Phantom MAT
+radonTransform = radon(inputImage_2,thetaRange);
+RRMSE_array = zeros(1,length(thetaRange));
+for i = 1:180
+	backPropImage = mat2gray(0.5*iradon(radonTransform, thetaRange + i,'linear','none',1,size(inputImage_2,1)));
+	RRMSE_array(i) = sqrt(sum((inputImage_2(:)-backPropImage(:)).^2))/sum((inputImage_2(:).^2));
+end
+
+minIndex = find(RRMSE_array == min(RRMSE_array))
+minBackPropImage = mat2gray(0.5*iradon(radonTransform, thetaRange + minIndex,'linear','none',1,size(inputImage_2,1)));
+
+plot(RRMSE_array)
+imshow(minBackPropImage)
+figure 
+subplot(2,1,1)
+plot(RRMSE_array)
+title('RRMSE vs Theta | Phantom')
+subplot(2,1,2)
+imshow(minBackPropImage)
+title('Backproj Image with min RRMSE | Phantom')
+##### SOURCE END #####
+--></body></html>
