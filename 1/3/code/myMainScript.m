@@ -15,15 +15,19 @@ inputImage_2 = mat2gray(phantom_data.imageAC);
 thetaRange = 1:1:150;
 
 %% CT_Chest MAT
-radonTransform = radon(inputImage_1,thetaRange);
 RRMSE_array = zeros(1,length(thetaRange));
+radonTransformFull = radon(inputImage_1,1:180);
 for i = 1:180
-	backPropImage = mat2gray(0.5*iradon(radonTransform, thetaRange + i,'linear','none',1,size(inputImage_1,1)));
+%     radonTransform = radon(inputImage_1,thetaRange+i);
+    t = sort(mod((1:1:150)+i,180)+1);
+    radonTransform = radonTransformFull(:,t);
+	backPropImage = mat2gray(0.5*iradon(radonTransform, t,'linear','none','Ram-Lak',1,size(inputImage_1,1)));
 	RRMSE_array(i) = sqrt(sum((inputImage_1(:)-backPropImage(:)).^2))/sum((inputImage_1(:).^2));
 end
 
 minIndex = find(RRMSE_array == min(RRMSE_array))
-minBackPropImage = mat2gray(0.5*iradon(radonTransform, thetaRange + minIndex,'linear','none',1,size(inputImage_1,1)));
+radonTransform = radon(inputImage_1,thetaRange+minIndex);
+minBackPropImage = mat2gray(0.5*iradon(radonTransform, mod(thetaRange + minIndex,180),'linear','none','Ram-Lak',1,size(inputImage_1,1)));
 
 figure 
 subplot(2,1,1)
@@ -34,18 +38,22 @@ imshow(minBackPropImage)
 title('Backproj Image with min RRMSE | CT Chest')
 
 %% Phantom MAT
-radonTransform = radon(inputImage_2,thetaRange);
 RRMSE_array = zeros(1,length(thetaRange));
+radonTransformFull = radon(inputImage_2,1:180);
 for i = 1:180
-	backPropImage = mat2gray(0.5*iradon(radonTransform, thetaRange + i,'linear','none',1,size(inputImage_2,1)));
+%     radonTransform = radon(inputImage_2,thetaRange);
+    t = sort(mod((1:1:150)+i,180)+1);
+    radonTransform = radonTransformFull(:,t);
+	backPropImage = mat2gray(0.5*iradon(radonTransform, t,'linear','none','Ram-Lak',1,size(inputImage_2,1)));
 	RRMSE_array(i) = sqrt(sum((inputImage_2(:)-backPropImage(:)).^2))/sum((inputImage_2(:).^2));
 end
 
 minIndex = find(RRMSE_array == min(RRMSE_array))
-minBackPropImage = mat2gray(0.5*iradon(radonTransform, thetaRange + minIndex,'linear','none',1,size(inputImage_2,1)));
+radonTransform = radon(inputImage_2,thetaRange+minIndex);
+minBackPropImage = mat2gray(0.5*iradon(radonTransform, mod(thetaRange + minIndex,180),'linear','none','Ram-Lak',1,size(inputImage_2,1)));
 
-plot(RRMSE_array)
-imshow(minBackPropImage)
+% plot(RRMSE_array)
+% imshow(minBackPropImage)
 figure 
 subplot(2,1,1)
 plot(RRMSE_array)
