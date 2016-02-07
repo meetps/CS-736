@@ -66,7 +66,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#2">1 - Ram-Lak</a></li><li><a href="#3">2 - Sheep-Logan</a></li><li><a href="#4">3 - Cosine</a></li><li><a href="#5">Part 2 - Backprojection of Smoothened Transforms</a></li><li><a href="#6">Part 3 RRMSE vs W</a></li></ul></div><pre class="codeinput">clc;
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#2">1 - Ram-Lak</a></li><li><a href="#3">2 - Sheep-Logan</a></li><li><a href="#4">3 - Cosine</a></li><li><a href="#21">Similarities and Differences</a></li><li><a href="#5">Part 2 - Backprojection of Smoothened Transforms</a></li><li><a href="#22">Explananation for Least RRMSE</a></li><li><a href="#6">Part 3 RRMSE vs W</a></li><li><a href="#23">Explananation of RRMSE vs w</a></li></ul></div><pre class="codeinput">clc;
 clear;
 close <span class="string">all</span>;
 
@@ -119,20 +119,14 @@ title(<span class="string">'Cosine filter with L = Wmax/2'</span>)
 subplot(3,2,6)
 imshow(backprojImage_1_3)
 title(<span class="string">'Cosine filter with L = Wmax'</span>)
-</pre><pre class="codeoutput">
-h = 
+</pre>
 
-  Figure (1) with properties:
+<img vspace="5" hspace="5" src="myMainScript_01.png" alt=""> <img vspace="5" hspace="5" src="myMainScript_02.png" alt=""> 
 
-      Number: 1
-        Name: ''
-       Color: [0.9400 0.9400 0.9400]
-    Position: [427 306 512 384]
-       Units: 'pixels'
-
-  Use GET to show all properties
-
-</pre><img vspace="5" hspace="5" src="myMainScript_01.png" alt=""> <img vspace="5" hspace="5" src="myMainScript_02.png" alt=""> <h2>Part 2 - Backprojection of Smoothened Transforms<a name="5"></a></h2><pre class="codeinput">mask = fspecial (<span class="string">'gaussian'</span>, 11, 1);
+<a name="21"><h2> Similarities and Differences in Images with Different Parameters</h2></a>
+<p>As we can see almost all images with Cutoff = w/2 work the best as they have no higher frequencies (f > w/2) which generally lead to higher noise in the images. Among Ram-Lak, Shep-Logan and Cosing the best reconstruction can be seen for Cosine filter as the filter spectrum plot gives least weightage to higher frequencies , hence whilst extracting information from the higher freqs it also avoids the amplification of the noise from them.  
+</p>
+<h2>Part 2 - Backprojection of Smoothened Transforms<a name="5"></a></h2><pre class="codeinput">mask = fspecial (<span class="string">'gaussian'</span>, 11, 1);
 f1 = conv2 (f, mask, <span class="string">'same'</span>);
 
 mask = fspecial (<span class="string">'gaussian'</span>, 51, 5);
@@ -180,7 +174,14 @@ disp(strcat([<span class="string">'RRMSE with sigma = 5 '</span> ,num2str(myRRMS
 </pre><pre class="codeoutput">RRMSE with sigma = 0 0.59715
 RRMSE with sigma = 1 0.50217
 RRMSE with sigma = 5 0.43821
-</pre><img vspace="5" hspace="5" src="myMainScript_03.png" alt=""> <img vspace="5" hspace="5" src="myMainScript_04.png" alt=""> <h2>Part 3 RRMSE vs W<a name="6"></a></h2><pre class="codeinput">N = size(radonTransformedPhantom,1);
+</pre><img vspace="5" hspace="5" src="myMainScript_03.png" alt=""> <img vspace="5" hspace="5" src="myMainScript_04.png" alt=""> 
+
+<a name="22"><h2>Explananation for Least RRMSE</h2></a>
+<p class="comment">
+	As can be seen in the above images the blurring with max sigma has the least error because when we make theta discrete errors jumps into the transform and this error is smoothen ( partly avoided with a higher blurring rate). Hence the image S5 has the least RRMSE error.
+</p>
+
+<h2>Part 3 RRMSE vs W<a name="6"></a></h2><pre class="codeinput">N = size(radonTransformedPhantom,1);
 RRMSE0_history = zeros(N,1);
 RRMSE1_history = zeros(N,1);
 RRMSE5_history = zeros(N,1);
@@ -206,7 +207,13 @@ plot(RRMSE1_history,<span class="string">'y'</span>)
 plot(RRMSE5_history,<span class="string">'r'</span>)
 title(<span class="string">'RRMSE vs theta'</span>)
 legend(<span class="string">'S0'</span>,<span class="string">'S1'</span>,<span class="string">'S5'</span>)
-</pre><img vspace="5" hspace="5" src="myMainScript_05.png" alt=""> <p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2014b</a><br></p></div><!--
+</pre><img vspace="5" hspace="5" src="myMainScript_05.png" alt=""> 
+
+<a name="23"><h2> Explananation for RRMSE vs W</h2></a>
+<p> As we can see the RRMSE is maximum for w = 1. This can be concluded from the fact that for w = 1 there is virtually no filtering we loose vital low freq imformation and hence all freq components are 0. Later on with increasing w the error increases as it gets amplified for larger frequencies.
+</p>
+
+<p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2014b</a><br></p></div><!--
 ##### SOURCE BEGIN #####
 clc;
 clear;
