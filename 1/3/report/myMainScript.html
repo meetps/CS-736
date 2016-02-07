@@ -99,9 +99,10 @@ subplot(2,1,2)
 imshow(minBackPropImage)
 title(<span class="string">'Backproj Image with min RRMSE | CT Chest'</span>)
 </pre><pre class="codeoutput">
+
+<h3> RRMSE plot and backProjection image for minimum error </h3>
 <h2>minIndex = 8 for chest data
 </h2>
-<h3> RRMSE plot and backProjection image for minimum error </h3>
 </pre><img vspace="5" hspace="5" src="myMainScript_02.png" alt=""> <h2>Phantom MAT<a name="5"></a></h2><pre class="codeinput">RRMSE_array = zeros(1,length(thetaRange));
 radonTransformFull = radon(inputImage_2,1:180);
 <span class="keyword">for</span> i = 1:180
@@ -126,9 +127,9 @@ subplot(2,1,2)
 imshow(minBackPropImage)
 title(<span class="string">'Backproj Image with min RRMSE | Phantom'</span>)
 </pre><pre class="codeoutput">
-<h2>minIndex = 18 for phantom image</h2>
-<h3> RRMSE plot and backProjection image for minimum error </h3>
 
+<h3> RRMSE plot and backProjection image for minimum error </h3>
+<h2>minIndex = 18 for phantom image</h2>
 </pre><img vspace="5" hspace="5" src="myMainScript_03.png" alt="">
 
 <h2>Explanation<a name="6"></a></h2>

@@ -22,7 +22,7 @@ for i = 1:180
     t = sort(mod((1:1:150)+i,180)+1);
     radonTransform = radonTransformFull(:,t);
 	backPropImage = mat2gray(0.5*iradon(radonTransform, t,'linear','none','Ram-Lak',1,size(inputImage_1,1)));
-	RRMSE_array(i) = sqrt(sum((inputImage_1(:)-backPropImage(:)).^2))/sum((inputImage_1(:).^2));
+	RRMSE_array(i) = sqrt(sum((inputImage_1(:)-backPropImage(:)).^2)/sum((inputImage_1(:).^2)));
 end
 
 minIndex = find(RRMSE_array == min(RRMSE_array))
@@ -45,7 +45,7 @@ for i = 1:180
     t = sort(mod((1:1:150)+i,180)+1);
     radonTransform = radonTransformFull(:,t);
 	backPropImage = mat2gray(0.5*iradon(radonTransform, t,'linear','none','Ram-Lak',1,size(inputImage_2,1)));
-	RRMSE_array(i) = sqrt(sum((inputImage_2(:)-backPropImage(:)).^2))/sum((inputImage_2(:).^2));
+	RRMSE_array(i) = sqrt(sum((inputImage_2(:)-backPropImage(:)).^2)/sum((inputImage_2(:).^2)));
 end
 
 minIndex = find(RRMSE_array == min(RRMSE_array))

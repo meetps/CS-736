@@ -136,7 +136,7 @@ ylabel('Radon Transform Value')
 %  
 
 
-%% Radon transform using large deltaT
+%% Radon transform using large deltaT showing low resolution
 deltaS=0.5;
 R = myRadonTransform(inputImg,deltaS,0); % 0 for low resolution, i.e. deltaT = 10
 figure
