@@ -65,10 +65,11 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#2">CT Chest Data</a></li><li><a href="#3">Phantom Data</a></li><li><a href="#4">CT_Chest MAT</a></li><li><a href="#5">Phantom MAT</a></li></ul></div><pre class="codeinput">clc;
-clear <span class="string">all</span>;
-close <span class="string">all</span>;
-</pre><h2>CT Chest Data<a name="2"></a></h2><pre class="codeinput">chest_data = load(<span class="string">'../data/CT_Chest.mat'</span>);
+  </style></head>
+  <body> 
+  <div class="content">
+  <h1>Assignment 1 - Q3 </h1>
+  <h2>Contents</h2><div><ul><li><a href="#2">CT Chest Data</a></li><li><a href="#3">Phantom Data</a></li><li><a href="#4">CT_Chest MAT</a></li><li><a href="#5">Phantom MAT</a></li><li><a href="#6">Explanation</a></li></ul></div><h2>CT Chest Data<a name="2"></a></h2><pre class="codeinput">chest_data = load(<span class="string">'../data/CT_Chest.mat'</span>);
 imshow(chest_data.imageAC,[]);
 inputImage_1 = mat2gray(chest_data.imageAC);
 </pre><h2>Phantom Data<a name="3"></a></h2><pre class="codeinput">phantom_data = load(<span class="string">'../data/myPhantom.mat'</span>);
@@ -98,10 +99,9 @@ subplot(2,1,2)
 imshow(minBackPropImage)
 title(<span class="string">'Backproj Image with min RRMSE | CT Chest'</span>)
 </pre><pre class="codeoutput">
-minIndex =
-
-     8
-
+<h2>minIndex = 8 for chest data
+</h2>
+<h3> RRMSE plot and backProjection image for minimum error </h3>
 </pre><img vspace="5" hspace="5" src="myMainScript_02.png" alt=""> <h2>Phantom MAT<a name="5"></a></h2><pre class="codeinput">RRMSE_array = zeros(1,length(thetaRange));
 radonTransformFull = radon(inputImage_2,1:180);
 <span class="keyword">for</span> i = 1:180
@@ -126,9 +126,8 @@ subplot(2,1,2)
 imshow(minBackPropImage)
 title(<span class="string">'Backproj Image with min RRMSE | Phantom'</span>)
 </pre><pre class="codeoutput">
-minIndex =
-
-    18
+<h2>minIndex = 18 for phantom image</h2>
+<h3> RRMSE plot and backProjection image for minimum error </h3>
 
 </pre><img vspace="5" hspace="5" src="myMainScript_03.png" alt=""> <p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2013a</a><br></p></div><!--
 ##### SOURCE BEGIN #####
