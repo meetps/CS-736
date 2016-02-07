@@ -69,7 +69,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
   <body> 
   <div class="content">
   <h1>Assignment 1 - Q3 </h1>
-  <h2>Contents</h2><div><ul><li><a href="#2">CT Chest Data</a></li><li><a href="#3">Phantom Data</a></li><li><a href="#4">CT_Chest MAT</a></li><li><a href="#5">Phantom MAT</a></li><li><a href="#6">Explanation</a></li></ul></div><h2>CT Chest Data<a name="2"></a></h2><pre class="codeinput">chest_data = load(<span class="string">'../data/CT_Chest.mat'</span>);
+  <h2>Contents</h2><div><ul><li><a href="#2">CT Chest Data</a></li><li><a href="#3">Phantom Data</a></li><li><a href="#4">CT_Chest MAT</a></li><li><a href="#5">Phantom MAT</a></li><li><a href="#6" style="font-size: 16px">Explanation</a></li></ul></div><h2>CT Chest Data<a name="2"></a></h2><pre class="codeinput">chest_data = load(<span class="string">'../data/CT_Chest.mat'</span>);
 imshow(chest_data.imageAC,[]);
 inputImage_1 = mat2gray(chest_data.imageAC);
 </pre><h2>Phantom Data<a name="3"></a></h2><pre class="codeinput">phantom_data = load(<span class="string">'../data/myPhantom.mat'</span>);
@@ -129,7 +129,17 @@ title(<span class="string">'Backproj Image with min RRMSE | Phantom'</span>)
 <h2>minIndex = 18 for phantom image</h2>
 <h3> RRMSE plot and backProjection image for minimum error </h3>
 
-</pre><img vspace="5" hspace="5" src="myMainScript_03.png" alt=""> <p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2013a</a><br></p></div><!--
+</pre><img vspace="5" hspace="5" src="myMainScript_03.png" alt="">
+
+<h2>Explanation<a name="6"></a></h2>
+<p style="font-size: 16px"> The given question mention that the CT-scan data is taken only in a range of 150 degrees. <br>
+So, the minimum error will occur in the direction/theta with the maximum significant data. <br>
+In the cases of Chest data and Phantom data, these occur at theta = 8 and theta = 18 degrees respectively. <br>
+This theta is completely determined by the direction having the maximum possible representation of the image, since <br>
+the radon transform is similar in its kind to the Fourier transform.
+
+
+<p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2013a</a><br></p></div><!--
 ##### SOURCE BEGIN #####
 clc;
 clear all;

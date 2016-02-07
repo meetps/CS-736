@@ -9,7 +9,7 @@ imshow(inputImg)
 %% Radon Transforms for different deltaS 
 tic
 deltaS=0.5;
-R = myRadonTransform(inputImg,deltaS,1); % 1 for high resolution, i.e. deltaT = 1
+R = myRadonTransform(inputImg,deltaS,1); % 1 for high resolution, i.e. deltaT = 5
 figure
 imagesc(R);
 title('Radon Transform with deltaS=0.5')
@@ -138,7 +138,7 @@ ylabel('Radon Transform Value')
 
 %% Radon transform using large deltaT
 deltaS=0.5;
-R = myRadonTransform(inputImg,deltaS,0); % 0 for low resolution, i.e. deltaT = 5
+R = myRadonTransform(inputImg,deltaS,0); % 0 for low resolution, i.e. deltaT = 10
 figure
 imagesc(R);
 title('Radon Transform with deltaS=0.5 but large deltaT')
@@ -147,7 +147,7 @@ title('Radon Transform with deltaS=0.5 but large deltaT')
 % We see that deltaT is a important factor for getting a quality radon
 % transform. Also, using a large deltaTheta causes blurring in the blue
 % part of the radon transform. So, the optimum value for deltaTheta is 1
-% and that for deltaT is 1.
+% and that for deltaT is 5.
 %
 
 %% Very large and very small deltaS

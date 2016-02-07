@@ -65,16 +65,18 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#2">Radon Transforms for different deltaS</a></li><li><a href="#3">1D function plots for the Radon-transform image values</a></li><li><a href="#4">Radon transform using large deltaT</a></li><li><a href="#5">Very large and very small deltaS</a></li></ul></div><pre class="codeinput">clc;
-clear;
-close <span class="string">all</span>
+  </style></head><body><div class="content">
+  <h1>Assignment 1 - Q1 </h1>
+  <h2>Contents</h2><div><ul><li><a href="#2">Radon Transforms for different deltaS</a></li><li><a href="#3">1D function plots for the Radon-transform image values</a></li><li><a href="#4">Radon transform using large deltaT</a></li><li><a href="#5">Very large and very small deltaS</a></li></ul></div>
 
-inputImg=phantom(128);
-figure
-imshow(inputImg)
 </pre>
 <h3> Original Phantom Image </h3>
-<img vspace="5" hspace="5" src="myMainScript_01.png" alt=""> <h2>Radon Transforms for different deltaS<a name="2"></a></h2><pre class="codeinput">tic
+
+<img vspace="5" hspace="5" src="myMainScript_01.png" alt=""> 
+<p style="font-size: 16px"> All the explanations are provided in parts inside this report </p>
+<h2>Radon Transforms for different deltaS<a name="2"></a></h2>
+
+<pre class="codeinput">tic
 deltaS=0.5;
 R = myRadonTransform(inputImg,deltaS,1); <span class="comment">% 1 for high resolution, i.e. deltaT = 1</span>
 figure
@@ -99,16 +101,16 @@ title(<span class="string">'Radon Transform with deltaS=3'</span>)
 toc
 </pre>
 
-<p style="font-size: 13px"> We can see the that the computation time decreases with increasing deltaS <br>
+<p style="font-size: 16px"> We can see the that the computation time decreases with increasing deltaS <br>
  but then the blurring increases. Observing the tradeoff between the both, <br>
  an optimal choice for computing the radon transform would be deltaS=1 <br>
  which is both smooth and fast enough.</p>
  
 <h4> Time elapsed for the 3 cases</h4>
-<pre class="codeoutput">Elapsed time is 15.834224 seconds.
-Elapsed time is 15.039766 seconds.
+<p style="font-size: 14px">Elapsed time is 15.834224 seconds. <br>
+Elapsed time is 15.039766 seconds. <br>
 Elapsed time is 14.425837 seconds.
-</pre><img vspace="5" hspace="5" src="myMainScript_02.png" alt=""> <img vspace="5" hspace="5" src="myMainScript_03.png" alt=""> <img vspace="5" hspace="5" src="myMainScript_04.png" alt=""> <h2>1D function plots for the Radon-transform image values<a name="3"></a></h2><pre class="codeinput">deltaS=0.5;
+</p><img vspace="5" hspace="5" src="myMainScript_02.png" alt=""> <img vspace="5" hspace="5" src="myMainScript_03.png" alt=""> <img vspace="5" hspace="5" src="myMainScript_04.png" alt=""> <h2>1D function plots for the Radon-transform image values<a name="3"></a></h2><pre class="codeinput">deltaS=0.5;
 figure
 theta=0;
 t=-90:5:90;
@@ -197,7 +199,7 @@ xlabel(<span class="string">'t(-90 to 90 in steps of 5)'</span>)
 ylabel(<span class="string">'Radon Transform Value'</span>)
 </pre>
 
-<p style="font-size: 13px"> We can see that the plots with theta=0 are less smoother than theta=90 <br>
+<p style="font-size: 15px"> We can see that the plots with theta=0 are less smoother than theta=90 <br>
  and get sharper with increasing deltaS. The reason for this can be given <br>
  as the image has relatively shorter dark patches in X direction while it <br>
  is fairly long in Y direction, which corresponds to theta=90.</p>
@@ -209,12 +211,12 @@ imagesc(R);
 title(<span class="string">'Radon Transform with deltaS=0.5 but large deltaT'</span>)
 </pre>
 
-<p style="font-size: 13px"> We see that deltaT is a important factor for getting a quality radon <br>
+<p style="font-size: 15px"> We see that deltaT is a important factor for getting a quality radon <br>
  transform. Also, using a large deltaTheta causes blurring in the blue <br>
  part of the radon transform. So, the optimum value for deltaTheta is 1 <br>
  and that for deltaT is 1.</p>
 
-<img vspace="5" hspace="5" src="myMainScript_06.png" alt=""> <h2>Very large and very small deltaS<a name="5"></a></h2><p style="font-size: 13px">If deltaS is very low, we make much extra efforts but don't gain much information. But if deltaS is very large, <br>
+<img vspace="5" hspace="5" src="myMainScript_06.png" alt=""> <h2>Very large and very small deltaS<a name="5"></a></h2><p style="font-size: 15px">If deltaS is very low, we make much extra efforts but don't gain much information. But if deltaS is very large, <br>
 we lose lot of information in in between the iterations and hence the result looks highly undersampled. <br> <br> <br></p><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2013a</a><br></p></div><!--
 ##### SOURCE BEGIN #####
 clc;

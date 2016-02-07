@@ -1,9 +1,9 @@
 function [R1] = myRadonTransform(inputImg,deltaS, resolution)
     
     if(resolution==0)
-        deltaT = 5;
+        deltaT = 10;
     else
-        deltaT = 1;
+        deltaT = 5;
     end
     
     t = -90:deltaT:90;
