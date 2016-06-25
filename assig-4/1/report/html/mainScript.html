@@ -1,0 +1,133 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>mainScript</title><meta name="generator" content="MATLAB 8.4"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2016-04-02"><meta name="DC.source" content="mainScript.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><pre class="codeinput">clear <span class="string">all</span>;
+close <span class="string">all</span>;
+load(<span class="string">'../data/assignmentSegmentBrain.mat'</span>);
+
+input_image = imageData.*imageMask;
+cropped_image = cropImage(imageData,imageMask);
+
+K = 3;
+q = 5;
+
+[segmented_image, class_membership, class_means, bias_field, bias_removed_image, residual_image, initial_means, intial_segment, objective_function] <span class="keyword">...</span>
+			 = performFCM(cropped_image,q,K);
+
+display(strcat( [<span class="string">'Used q :'</span> num2str(q)] ));
+display(strcat( [<span class="string">'Used K :'</span> num2str(K)] ));
+
+display(strcat( [<span class="string">'Initial Class 1 Mean:'</span> num2str(initial_means(1))]));
+display(strcat( [<span class="string">'Initial Class 2 Mean:'</span> num2str(initial_means(2))]));
+display(strcat( [<span class="string">'Initial Class 3 Mean:'</span> num2str(initial_means(3))]));
+
+plotImages(intial_segment,class_membership,cropped_image,bias_field,bias_removed_image,residual_image,objective_function);
+
+display(strcat( [<span class="string">'Final Class 1 Mean:'</span> num2str(class_means(1))]));
+display(strcat( [<span class="string">'Final Class 2 Mean:'</span> num2str(class_means(2))]));
+display(strcat( [<span class="string">'Final Class 3 Mean:'</span> num2str(class_means(3))]));
+</pre><pre class="codeoutput">Used q :5
+Used K :3
+Initial Class 1 Mean:0.4572
+Initial Class 2 Mean:0.6362
+Initial Class 3 Mean:0.253
+
+Standard K-means algorithm was used to get the inital class memberships and the class means. This was a natural choice as k-means is <br>a efficient and widely used algorithm to semantically segment images. The means hence obtained are later used in implementing the FCM.
+
+Final Class 1 Mean:0.61074
+Final Class 2 Mean:0.92967
+Final Class 3 Mean:0.23785
+</pre><img vspace="5" hspace="5" src="mainScript_01.png" alt=""> <img vspace="5" hspace="5" src="mainScript_02.png" alt=""> <img vspace="5" hspace="5" src="mainScript_03.png" alt=""> <img vspace="5" hspace="5" src="mainScript_04.png" alt=""> <img vspace="5" hspace="5" src="mainScript_05.png" alt=""> <img vspace="5" hspace="5" src="mainScript_06.png" alt=""> <img vspace="5" hspace="5" src="mainScript_07.png" alt=""> <img vspace="5" hspace="5" src="mainScript_08.png" alt=""> <img vspace="5" hspace="5" src="mainScript_09.png" alt=""> <p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2014b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+clear all;
+close all;
+load('../data/assignmentSegmentBrain.mat');
+
+input_image = imageData.*imageMask;
+cropped_image = cropImage(imageData,imageMask);
+
+K = 3;
+q = 5;
+
+[segmented_image, class_membership, class_means, bias_field, bias_removed_image, residual_image, initial_means, intial_segment, objective_function] ...
+			 = performFCM(cropped_image,q,K);
+
+display(strcat( ['Used q :' num2str(q)] ));
+display(strcat( ['Used K :' num2str(K)] ));
+
+display(strcat( ['Initial Class 1 Mean:' num2str(initial_means(1))]));
+display(strcat( ['Initial Class 2 Mean:' num2str(initial_means(2))]));
+display(strcat( ['Initial Class 3 Mean:' num2str(initial_means(3))]));
+
+plotImages(intial_segment,class_membership,cropped_image,bias_field,bias_removed_image,residual_image,objective_function);
+
+display(strcat( ['Final Class 1 Mean:' num2str(class_means(1))]));
+display(strcat( ['Final Class 2 Mean:' num2str(class_means(2))]));
+display(strcat( ['Final Class 3 Mean:' num2str(class_means(3))]));
+##### SOURCE END #####
+--></body></html>
