@@ -1,0 +1,19 @@
+function [best_estimate, e, e1, e2, e3, e4, series] =  ...
+    runGradientDescents(imageNoisy, imageNoiseless, algorithm, best_alpha, best_gamma)
+    [best_estimate, series] = applyGradientDescent(imageNoisy, algorithm,...
+        best_alpha, best_gamma, 1);
+    estimate_1 = applyGradientDescent(imageNoisy, algorithm,...
+        1.2*best_alpha, best_gamma);
+    estimate_2 = applyGradientDescent(imageNoisy, algorithm,...
+        0.8*best_alpha, best_gamma);
+    estimate_3 = applyGradientDescent(imageNoisy, algorithm,...
+        best_alpha, 1.2*best_gamma);
+    estimate_4 = applyGradientDescent(imageNoisy, algorithm,...
+        best_alpha, 0.8*best_gamma);
+    
+    e = abs(rrmse(imageNoiseless, best_estimate));
+    e1 = abs(rrmse(imageNoiseless, estimate_1));
+    e2 = abs(rrmse(imageNoiseless, estimate_2));
+    e3 = abs(rrmse(imageNoiseless, estimate_3));
+    e4 = abs(rrmse(imageNoiseless, estimate_4));
+end
