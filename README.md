@@ -1,4 +1,6 @@
-# CS-736 Assignments.
+# CS-736 Algorithms for Medical Image Processing
+
+## Assignments
 
 ### Assignment 1
 
